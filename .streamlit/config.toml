@@ -1,0 +1,7 @@
+[logger]
+level = "info"
+messageFormat = "%(asctime)s %(message)s"
+
+[server]
+runOnSave = true
+maxUploadSize = 20000
