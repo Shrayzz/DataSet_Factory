@@ -20,11 +20,11 @@ def uploadJsonFile():
 
 def Mainwindow(uploadedFile):
     with topCol1:
-        st.header(uploadedFile.name)
+        st.header(":pushpin: " + uploadedFile.name)
         df = pd.read_json(uploadedFile) # some JSON needs the args lines=True and some not, depends on the JSON file format
         st.dataframe(df, use_container_width=True, height=495)
     with topCol2:
-        st.header("DataSet Informations")
+        st.header(":clipboard: DataSet Informations")
         with st.container(border=True):
             st.write("Rows: ", df.shape[0])
             st.write("Columns: ", df.shape[1])
