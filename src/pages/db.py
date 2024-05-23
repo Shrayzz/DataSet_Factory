@@ -34,11 +34,10 @@ def createDB(df):
     con.commit()
     
 
-# searching : liste d'expression / colu : liste de colonnes
 def SearchInDB(searching, colu, df):
-    sqlin = ''' IN ("'''
+    sqlin = ''' LIKE ("'''
     for ex in searching:
-        sqlin += ex
+        sqlin += "%"+ex+"%"
         if (ex != searching[-1]):
             sqlin += '", "'
         sqlin+= '")'
@@ -48,18 +47,25 @@ def SearchInDB(searching, colu, df):
         if col != df.columns[-1]:
             sqlcol+= ", "
 
-    sql = '''SELECT''' + sqlcol + " FROM dataset"
+    sql = '''SELECT''' + sqlcol + ", isValidate FROM dataset"
     
     sql+= " WHERE "
 
     for col in colu:
-        if (len(searching) == 1):
-            sql += col + ' = "'+ searching[0] +'"'
-        else :
-            sql += col + sqlin
+        #if (len(searching) == 1):
+        #    sql += col + ' = "'+ searching[0] +'"'
+        #else :
+        sql += '('
+        for ex in searching:
+            sql += col + ' LIKE "'
+            sql += "%"+ex+"%"
+            if (ex != searching[-1]):
+                sql += '" OR "'
+        sql += '"'
+
         if (col != colu[-1]):
-            sql+=' OR '
-    sql+=";"
+            sql+=') OR ('
+    sql+=')'
     print(sql)
     df = pd.read_sql_query(sql, con)
     st.write(sql)
