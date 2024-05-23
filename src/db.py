@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import sqlite3
 
-con = sqlite3.connect("dataset.bd")
+con = sqlite3.connect("dataset.db", check_same_thread=False)
 
 def createDB(df):
 
