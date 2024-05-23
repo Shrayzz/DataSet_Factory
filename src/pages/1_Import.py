@@ -23,9 +23,8 @@ def Mainwindow(uploadedFile): #load the uploaded in file into the dataset
             case ".jsonl":
                 df = pd.read_json(uploadedFile, lines=True)
             #no default needed st.file_uploader ensure that it is the correct file extension
-
-        st.dataframe(df, use_container_width=True, height=495)
-        db.createDB(df)
+        st.dataframe(db.createDB(df), use_container_width=True, height=495)
+        
     with topCol1:
         st.header(":clipboard:  Informations")
         with st.container(border=True):
