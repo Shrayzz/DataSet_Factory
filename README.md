@@ -1,13 +1,5 @@
-# py_Jeu-de-Donnees
+# DataSet Factory
 
 ### SAE BDD
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dignissim enim posuere tristique blandit. Fusce consectetur quis dui ac maximus. Proin volutpat, dolor vitae ultricies mattis, justo nisi semper erat, sit amet vestibulum odio ligula at orci. Nunc tincidunt pretium facilisis. Sed maximus sem fermentum, ultricies neque vitae, convallis nisl. Mauris viverra luctus sapien, ut volutpat nibh viverra nec. Nulla lacus sapien, placerat vitae ultrices viverra, ornare sollicitudin eros. Fusce aliquet erat eu viverra lacinia. Maecenas a maximus nisl. Etiam at vulputate enim, nec placerat dolor. Suspendisse vel felis a est dictum rutrum. Nullam accumsan ex quis mi lobortis, maximus mollis nunc dignissim. Nulla diam dolor, lobortis sed rutrum non, vulputate at nisi. Curabitur vel molestie elit.
-
-Praesent quis sem arcu. Nunc luctus tincidunt dui et molestie. Integer libero quam, cursus ac sagittis non, semper vitae erat. Quisque augue nulla, porta nec ligula ut, iaculis tempor magna. Aenean eu sem at risus rutrum facilisis in ut enim. Integer molestie nulla sit amet diam tincidunt vestibulum. In interdum eros lectus, a lacinia nunc semper non. Nam eget gravida odio. Nunc vel nibh luctus, vulputate augue lobortis, vestibulum leo. Nullam pharetra nisl vitae metus rhoncus, ac sodales nisi vehicula.
-
-Vestibulum porttitor nec dolor eu malesuada. Vivamus in nunc rhoncus, imperdiet arcu tempus, ultrices enim. Nam porta consectetur leo quis euismod. In pellentesque nisi id est commodo, et tempor erat viverra. In nibh turpis, dictum vitae elementum in, fringilla finibus nisl. Quisque maximus lacinia arcu, eu blandit metus cursus a. Nam iaculis, leo ac laoreet maximus, erat libero dignissim lectus, at pellentesque velit massa ac libero.
-
-Duis lobortis at ex cursus lobortis. Duis sit amet cursus purus, nec interdum augue. Nullam odio ipsum, rutrum a elit in, pulvinar consectetur tellus. Donec feugiat eros eget turpis sollicitudin, dapibus molestie turpis gravida. Duis volutpat purus sed dapibus pretium. Vestibulum varius posuere ex, non feugiat massa tincidunt vel. Proin id lobortis orci, quis commodo diam.
-
-Pellentesque efficitur enim velit, et molestie turpis hendrerit sit amet. Cras erat justo, bibendum non tincidunt non, volutpat sit amet felis. Aliquam mattis nec urna ut maximus. Pellentesque molestie lacus ut velit feugiat, vitae pellentesque metus facilisis. Phasellus posuere lorem sit amet felis hendrerit lobortis. In hac habitasse platea dictumst. Morbi sed ante eget nunc tincidunt hendrerit ut a dui. Praesent nibh augue, iaculis sit amet arcu eu, mattis facilisis justo. Aliquam erat volutpat. Mauris eleifend dolor tincidunt fringilla venenatis. Suspendisse condimentum ante placerat nulla condimentum, eget cursus ipsum scelerisque. Praesent non accumsan felis, vitae sollicitudin purus. Pellentesque convallis nisi sapien, ac condimentum urna varius vitae. Donec id ligula eu neque hendrerit ultricies molestie sit amet sem. Fusce hendrerit accumsan odio eget ultricies. Vivamus dictum velit eget lacus pellentesque volutpat.
+Run the app with `streamlit run .\src\Home.py`

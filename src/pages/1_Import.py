@@ -1,3 +1,5 @@
+import db
+
 import streamlit as st
 import os
 import pandas as pd
@@ -23,7 +25,7 @@ def Mainwindow(uploadedFile): #load the uploaded in file into the dataset
             #no default needed st.file_uploader ensure that it is the correct file extension
 
         st.dataframe(df, use_container_width=True, height=495)
-        CreateDB(df)
+        db.CreateDB(df)
     with topCol1:
         st.header(":clipboard:  Informations")
         with st.container(border=True):
