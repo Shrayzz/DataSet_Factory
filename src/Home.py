@@ -9,14 +9,14 @@ st.title(":factory: DataSet Factory", anchor=False)
 
 Col0, Col1, Col2 = st.columns([0.15,0.70,0.15])
 
-def readFile(): #return the content of the README file
-    with open('README.md') as md: 
+def readFile(): # return the content of the README file
+    with open('README.md') as md:
         content = md.read()
     return content
 
-def markdownDisplay(text): #display text on the home page
+def markdownDisplay(text): # display text on the home page
     with Col1:
         with st.container(border=True):
                 st.markdown(text)
-    
+
 markdownDisplay(readFile())
