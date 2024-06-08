@@ -1,3 +1,4 @@
 .vs
+.vscode
 dataset.db
 __pycache__/
