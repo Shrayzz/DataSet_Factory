@@ -12,10 +12,8 @@ topCol0, topCol1 = st.columns([0.75,0.25])
 
 # Load the temporary file path from session state
 uploadedFile = st.session_state.get('uploadedFile', None)
-fileName = os.path.splitext(os.path.basename(uploadedFile.name))[0]
-fileExtension = os.path.splitext(os.path.basename(uploadedFile.name))[1]
 
-def displayDataFrame():
+def displayDataFrame(uploadedFile, fileName, fileExtension):
     if uploadedFile is not None:
         if fileExtension == ".json":
             df = pd.read_json(uploadedFile) 
@@ -39,4 +37,10 @@ def displayDataFrame():
     else:
         st.warning("No dataset loaded. Please upload a dataset in the Import section.")
 
-displayDataFrame()
+if uploadedFile is not None:
+    fileName = os.path.splitext(os.path.basename(uploadedFile.name))[0]
+    fileExtension = os.path.splitext(os.path.basename(uploadedFile.name))[1]
+    displayDataFrame(uploadedFile, fileName, fileExtension)
+else:
+    st.warning("No dataset loaded. Please upload a dataset in the Import section.")
+

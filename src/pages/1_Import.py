@@ -29,7 +29,7 @@ def uploadJsonFile(): # upload a file to display it in a dataset
                 st.session_state['uploadedFile'] = uploadedFile
                 
                 # Redirect to Edit page
-                st.rerun()
+                st.success("File uploaded successfully, look on Edit tab !")
             else:
                 st.warning("You must choose a file to upload !")
 
