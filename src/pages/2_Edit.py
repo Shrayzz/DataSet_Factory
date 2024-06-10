@@ -32,8 +32,7 @@ def displayDataFrame(uploadedFile, fileName, fileExtension):
             with topCol0:
                 st.header(f":pushpin: {fileName} Dataset")
                 st.dataframe(db.CreateTable(df), use_container_width=True, height=495)
-                st.button(":heavy_check_mark: Validate Mode", help=":x: Not Implemented yet.") # help == PLACEHOLDER
-            
+
             with topCol1:
                 st.header(":clipboard: Informations")
                 with st.container():
@@ -41,6 +40,11 @@ def displayDataFrame(uploadedFile, fileName, fileExtension):
                     st.write("Columns: ", df.shape[1])
                     st.write("Columns Names: ", df.columns.tolist())
                     st.write("Columns Unique Values: ", df.nunique())
+                    row_number = st.number_input("Row To Validate", min_value=0, max_value=df.shape[0], step=1)
+                    if st.button(":heavy_check_mark: Validate selected Row", help="Validate the row specified above"):
+                        db.Validate(row_number)
+                    if st.button(":heavy_check_mark: Validate all Row", help="Validate all Row"):
+                        db.Validate(df.shape[0])
         
         except ValueError as e:
             st.error(f":x: Error reading JSON file: {e}")

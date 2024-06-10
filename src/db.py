@@ -4,7 +4,7 @@ import numpy as np
 import sqlite3
 
 
-con = sqlite3.connect("dataset.db", check_same_thread=False)
+con = sqlite3.connect("dataset.db", check_same_thread=False, timeout=10000)
 cursor = con.cursor()
 lastSqlQuery =""
 allCols = []
