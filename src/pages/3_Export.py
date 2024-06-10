@@ -35,7 +35,7 @@ if 'dataframe' in st.session_state:
     file_name = st.text_input("Enter the file name (without extension):", value="exported_dataset")
 
     # Demander le répertoire de sauvegarde à l'utilisateur
-    save_directory = st.text_input("Enter the directory where you want to save the file:", value="./datasets/exported", help="Default value corresponds to base destination folder you are")
+    save_directory = st.text_input("Enter the directory where you want to save the file:", value=".\datasets\exported", help="Default value corresponds to base destination folder you are")
 
     # Sélectionner le format de sauvegarde
     file_format = st.selectbox("Select file format to save:", ['JSON', 'JSONL', 'PARQUET'], help="For better reading, choose the extension which corresponds at dataframe selected")
@@ -45,7 +45,7 @@ if 'dataframe' in st.session_state:
     if st.button("Save dataset"):
         try:
             filepath = save_dataframe_to_file(df, save_directory, filename, file_format)
-            st.success(f"File saved successfully at {filepath}")
+            st.success(f":heavy_check_mark: File saved successfully at {filepath}")
         except Exception as e:
             st.error(f"Error saving file: {e}")
 else:
