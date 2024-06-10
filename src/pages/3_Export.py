@@ -17,7 +17,7 @@ def save_dataframe_to_file(df, directory, filename, file_format):
         os.makedirs(directory)
     filepath = os.path.join(directory, filename)
     if file_format.lower() == 'json':
-        df.to_json(filepath, orient='records', lines=False)
+        df.to_json(filepath, orient='records', lines=False, indent=True)
     elif file_format.lower() == 'jsonl':
         df.to_json(filepath, orient='records', lines=True)
     elif file_format.lower() == 'parquet':
