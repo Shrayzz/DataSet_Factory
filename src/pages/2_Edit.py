@@ -15,25 +15,35 @@ uploadedFile = st.session_state.get('uploadedFile', None)
 
 def displayDataFrame(uploadedFile, fileName, fileExtension):
     if uploadedFile is not None:
-        if fileExtension == ".json":
-            df = pd.read_json(uploadedFile) 
-        elif fileExtension == ".jsonl":
-            df = pd.read_json(uploadedFile, lines=True)
-        # Clean the dataframe to remove any null characters
-        df = df.map(lambda x: x.replace('\x00', '') if isinstance(x, str) else x)
-    
-        with topCol0:
-            st.header(f":pushpin: {fileName} Dataset")
-            st.dataframe(db.CreateTable(df), use_container_width=True, height=495) # error here when switching of section, 'SELECT , isValidate FROM dataset'
+        try:
+            # Reset file pointer to the beginning
+            uploadedFile.seek(0)
+            
+            if fileExtension == ".json":
+                df = pd.read_json(uploadedFile) 
+            elif fileExtension == ".jsonl":
+                df = pd.read_json(uploadedFile, lines=True)
+            else:
+                st.error("Unsupported file extension")
+
+            # Clean the dataframe to remove any null characters
+            df = df.map(lambda x: x.replace('\x00', '') if isinstance(x, str) else x)
         
-        with topCol1:
-            st.header(":clipboard: Informations")
-            with st.container():
-                st.write("Rows: ", df.shape[0])
-                st.write("Columns: ", df.shape[1])
-                st.write("Columns Names: ", df.columns.tolist())
-                st.write("Columns Unique Values: ", df.nunique())
-    
+            with topCol0:
+                st.header(f":pushpin: {fileName} Dataset")
+                st.dataframe(db.CreateTable(df), use_container_width=True, height=495)
+            
+            with topCol1:
+                st.header(":clipboard: Informations")
+                with st.container():
+                    st.write("Rows: ", df.shape[0])
+                    st.write("Columns: ", df.shape[1])
+                    st.write("Columns Names: ", df.columns.tolist())
+                    st.write("Columns Unique Values: ", df.nunique())
+        
+        except ValueError as e:
+            st.error(f"Error reading JSON file: {e}")
+            st.error("Ensure the uploaded file is a valid JSON.")
     else:
         st.warning("No dataset loaded. Please upload a dataset in the Import section.")
 
@@ -43,4 +53,3 @@ if uploadedFile is not None:
     displayDataFrame(uploadedFile, fileName, fileExtension)
 else:
     st.warning("No dataset loaded. Please upload a dataset in the Import section.")
-

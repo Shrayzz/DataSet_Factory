@@ -18,15 +18,26 @@ def uploadJsonFile(): # upload a file to display it in a dataset
         uploadedFile = st.file_uploader("Load a dataset file", type=['json', 'jsonl'], accept_multiple_files=False, help="Upload datasets in json / jsonl format",)
         if st.button(":outbox_tray: Load a dataset"):
             if uploadedFile is not None:
-                print(uploadedFile)
                 # Save the uploaded file temporarily
                 temp_file_path = os.path.join(tempfile.gettempdir(), "temp_uploaded_file.json")
-                print(temp_file_path)
                 with open(temp_file_path, "wb") as f:
                     f.write(uploadedFile.getbuffer())
                 
-                # Set the path in the session state
+                # Load the data into a DataFrame
+                if uploadedFile.name.endswith('.json'):
+                    df = pd.read_json(temp_file_path)
+                elif uploadedFile.name.endswith('.jsonl'):
+                    df = pd.read_json(temp_file_path, lines=True)
+                
+                # Clean the dataframe to remove any null characters
+                df = df.map(lambda x: x.replace('\x00', '') if isinstance(x, str) else x)
+                
+                # Save the dataframe to the database
+                db.CreateTable(df)
+                
+                # Set the DataFrame in the session state
                 st.session_state['uploadedFile'] = uploadedFile
+                st.session_state['dataframe'] = df
                 
                 # Redirect to Edit page
                 st.success("File uploaded successfully, look on Edit tab !")
