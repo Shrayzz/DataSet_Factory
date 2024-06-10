@@ -2,3 +2,4 @@
 .vscode
 dataset.db
 __pycache__/
+datasets/exported
