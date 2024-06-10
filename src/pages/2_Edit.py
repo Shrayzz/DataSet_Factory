@@ -32,6 +32,7 @@ def displayDataFrame(uploadedFile, fileName, fileExtension):
             with topCol0:
                 st.header(f":pushpin: {fileName} Dataset")
                 st.dataframe(db.CreateTable(df), use_container_width=True, height=495)
+                st.button(":heavy_check_mark: Validate Mode", help=":x: Not Implemented yet.") # help == PLACEHOLDER
             
             with topCol1:
                 st.header(":clipboard: Informations")
@@ -42,14 +43,14 @@ def displayDataFrame(uploadedFile, fileName, fileExtension):
                     st.write("Columns Unique Values: ", df.nunique())
         
         except ValueError as e:
-            st.error(f"Error reading JSON file: {e}")
-            st.error("Ensure the uploaded file is a valid JSON.")
+            st.error(f":x: Error reading JSON file: {e}")
+            st.error(":x: Ensure the uploaded file is a valid JSON.")
     else:
-        st.warning("No dataset loaded. Please upload a dataset in the Import section.")
+        st.warning(":warning: No dataset loaded. Please upload a dataset in the Import section.")
 
 if uploadedFile is not None:
     fileName = os.path.splitext(os.path.basename(uploadedFile.name))[0]
     fileExtension = os.path.splitext(os.path.basename(uploadedFile.name))[1]
     displayDataFrame(uploadedFile, fileName, fileExtension)
 else:
-    st.warning("No dataset loaded. Please upload a dataset in the Import section.")
+    st.warning(":warning: No dataset loaded. Please upload a dataset in the Import section.")
