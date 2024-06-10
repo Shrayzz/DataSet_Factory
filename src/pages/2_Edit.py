@@ -24,7 +24,7 @@ def displayDataFrame(uploadedFile, fileName, fileExtension):
     
         with topCol0:
             st.header(f":pushpin: {fileName} Dataset")
-            st.dataframe(db.CreateDB(df), use_container_width=True, height=495) # error here when switching of section, 'SELECT , isValidate FROM dataset'
+            st.dataframe(db.CreateTable(df), use_container_width=True, height=495) # error here when switching of section, 'SELECT , isValidate FROM dataset'
         
         with topCol1:
             st.header(":clipboard: Informations")
