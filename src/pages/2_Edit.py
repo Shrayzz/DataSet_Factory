@@ -12,10 +12,10 @@ topCol0, topCol1 = st.columns([0.75,0.25])
 
 # Load the temporary file path from session state
 uploadedFile = st.session_state.get('uploadedFile', None)
-tableName = uploadedFile.name.replace("-", "_").split('.',1)[0]
 
 def displayDataFrame(uploadedFile, fileName, fileExtension):
     if uploadedFile is not None:
+        tableName = uploadedFile.name.replace("-", "_").split('.',1)[0]
         try:
             # Reset file pointer to the beginning
             uploadedFile.seek(0)

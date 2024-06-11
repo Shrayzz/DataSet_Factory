@@ -6,6 +6,7 @@ import sqlite3
 
 con = sqlite3.connect("dataset.db", check_same_thread=False, timeout=10000)
 cursor = con.cursor()
+cursor.execute("PRAGMA journal_mode = OFF")
 lastSqlQuery =""
 allCols = []
 

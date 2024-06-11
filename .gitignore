@@ -3,4 +3,4 @@
 dataset.db
 __pycache__/
 datasets/exported
-.db-journal
+dataset.db-journal
