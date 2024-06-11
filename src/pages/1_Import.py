@@ -33,7 +33,7 @@ def uploadJsonFile(): # upload a file to display it in a dataset
                 df = df.map(lambda x: x.replace('\x00', '') if isinstance(x, str) else x)
                 
                 # Save the dataframe to the database
-                db.CreateTable(df)
+                db.CreateTable(uploadedFile.name,df)
                 
                 # Set the DataFrame in the session state
                 st.session_state['uploadedFile'] = uploadedFile
