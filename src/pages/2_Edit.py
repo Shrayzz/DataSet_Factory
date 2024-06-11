@@ -12,6 +12,7 @@ topCol0, topCol1 = st.columns([0.75,0.25])
 
 # Load the temporary file path from session state
 uploadedFile = st.session_state.get('uploadedFile', None)
+tableName = uploadedFile.name.replace("-", "_").split('.',1)[0]
 
 def displayDataFrame(uploadedFile, fileName, fileExtension):
     if uploadedFile is not None:
@@ -31,7 +32,7 @@ def displayDataFrame(uploadedFile, fileName, fileExtension):
         
             with topCol0:
                 st.header(f":pushpin: {fileName} Dataset")
-                st.dataframe(db.CreateTable(uploadedFile.name,df), use_container_width=True, height=495)
+                st.dataframe(db.CreateTable(tableName,df), use_container_width=True, height=495)
 
             with topCol1:
                 st.header(":clipboard: Informations")
@@ -40,11 +41,15 @@ def displayDataFrame(uploadedFile, fileName, fileExtension):
                     st.write("Columns: ", df.shape[1])
                     st.write("Columns Names: ", df.columns.tolist())
                     st.write("Columns Unique Values: ", df.nunique())
-                    row_number = st.number_input("Row To Validate", min_value=0, max_value=df.shape[0], step=1)
+                    row_number = st.number_input("Row To Modify", min_value=0, max_value=df.shape[0], step=1)
+                    if st.button(":heavy_multiplication_x: Delete selected Row", help="Delete the row specified above"):
+                        db.DeleteRow(tableName,row_number,throwBack=True)
                     if st.button(":heavy_check_mark: Validate selected Row", help="Validate the row specified above"):
-                        db.Validate(uploadedFile.name,row_number)
+                        db.Validate(tableName,row_number)
+                        db.CreateTable(tableName, df) # actualize db 
                     if st.button(":heavy_check_mark: Validate all Row", help="Validate all Row"):
-                        db.Validate(uploadedFile.name,df.shape[0])
+                        db.Validate(tableName,df.shape[0])
+                        db.CreateTable(tableName, df) #actualize db
         
         except ValueError as e:
             st.error(f":x: Error reading JSON file: {e}")
