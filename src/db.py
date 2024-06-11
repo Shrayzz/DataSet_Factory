@@ -55,10 +55,11 @@ def Normalize(name, df):
 
 # creates a sql database from df
 def CreateTable(name, df):
+    formated_name = name.replace("-", "_") # sqlite doesnt support '-' in table name
     global allCols
     col = len(df.columns)
     
-    sqlcreate = '''CREATE TABLE '''+name+" ( id INTEGER PRIMARY KEY AUTOINCREMENT"
+    sqlcreate = '''CREATE TABLE '''+formated_name+" ( id INTEGER PRIMARY KEY AUTOINCREMENT"
     allCols.clear()
     for col in df.columns:
         allCols.append(col)
@@ -66,11 +67,11 @@ def CreateTable(name, df):
     sqlcreate+=", isValidate BOOLEAN ) "
     allCols.append("isValidate")
 
-    cursor.execute('''DROP Table IF EXISTS '''+name)
+    cursor.execute('''DROP Table IF EXISTS '''+formated_name)
     cursor.execute(sqlcreate)
 
     for row in range(len(df)):
-        sqlinsert = '''INSERT INTO '''+name+" VALUES "
+        sqlinsert = '''INSERT INTO '''+formated_name+" VALUES "
         sqlinsert += ('(%a, "')%row
         for col in range(len(df.columns)):
             sqlinsert += (df.iloc[row,col]).replace('"', '""')
@@ -79,7 +80,7 @@ def CreateTable(name, df):
         sqlinsert += '", FALSE)'
         cursor.execute(sqlinsert)
 
-    return GetDfFromDb(name,"")
+    return GetDfFromDb(formated_name,"")
 
 # filtrates the database
 # searching : liste d'expression / colu : liste de colonnes (name of columns)
