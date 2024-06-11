@@ -29,8 +29,9 @@ def GetDfFromDb(name, sql):
         lastSqlQuery = sql
     
     df = pd.read_sql_query(sql, con)
-    df["isValidate"] = df["isValidate"].replace([1], True)
-    df["isValidate"] = df["isValidate"].replace([0], False)
+    if 'isValidate' in df.columns:
+        df["isValidate"] = df["isValidate"].replace([1], True)
+        df["isValidate"] = df["isValidate"].replace([0], False)
     return df
 
 # normalise database
