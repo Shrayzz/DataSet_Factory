@@ -2,7 +2,7 @@
 
 ## ▶ Introduction
 
-DataSet_Factory is a Python application tool who can read, edit, verify, export a dataset and other... 
+DataSet_Factory is a Python application tool who can read, edit, verify, export a dataset and other...
 
 ## ▶ How to install
 
@@ -16,19 +16,18 @@ Run the app with `streamlit run .\src\Home.py`
 
 ## 1️⃣ Import Dataframe
 
-This page only serves to import an load a JSON, JSONL *(and PARQUET soon !)* dataframes inside 20GB. 
+This page only serves to import and load a JSON / JSONL DataSet.
 
-![Import](./src/assets/Import.png "Import Page")
+![Import](/src/assets/Import.png "Import Page")
 
 ## 2️⃣ Edit Dataframe
 
-
 This is on this page were edit, verify or simply see your dataframe imported is possible. You have some informations about the dataframe on the right like the number of rows, columns, columns names...
 
-![Edit](./src/assets/Edit.png "Edit Page")
+![Edit](/src/assets/Edit.png "Edit Page")
 
 ## 3️⃣ Export Dataframe
 
-In this page, you can export the dataframe you imported. You can choose his name, his directory and change his origin extension too.  
+In this page, you can export the dataframe you imported. You can choose his name, his directory and change his origin extension too.
 
-![Export](./src/assets/Export.png "Export Page")
+![Export](/src/assets/Export.png "Export Page")
