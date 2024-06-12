@@ -115,6 +115,14 @@ def SearchInDB(name, searching, colu):
 
     return GetDfFromDb(name,sql)
 
+# get the validated rows
+# name of the table
+# returns the numbers of validated rows
+def CountValidatedRow(name):
+    cursor.execute(f"SELECT COUNT(*) FROM {name} WHERE isValidate = 1;")
+    count = cursor.fetchone()[0]
+    return count
+
 # set a row as verified 
 # row(int), throwback(bool) (get the updated dataframe if True)
 # returns df if throwback = True
@@ -130,6 +138,20 @@ def Validate(name, row, throwBack = False):
     if throwBack :
         return GetDfFromDb(name, "last")
 
+# set a row as unverified 
+# row(int), throwback(bool) (get the updated dataframe if True)
+# returns df if throwback = True
+def Unvalidate(name, row, throwBack = False):
+    con.execute("SELECT isValidate FROM "+name+" WHERE id = " + str(row))
+    result = cursor.fetchall()
+    if result == True:
+        sql = '''UPDATE '''+name+" SET isValidate = FALSE WHERE id = " + str(row)
+    sql = '''UPDATE '''+name+" SET isValidate = FALSE WHERE id = " + str(row)
+    result = con.execute(sql)
+    con.commit()
+
+    if throwBack :
+        return GetDfFromDb(name, "last")
 
 # update a row
 # row (int), col (string/int), value (string/int), throwBack(True to get the updated df)
@@ -229,7 +251,7 @@ def AddColumn(name, Colname, value):
 # remove a column
 # Colname (string)
 # returns the updated df
-def Removeolumn(name, Colname):
+def RemoveColumn(name, Colname):
     global allCols
     global lastSqlQuery
     if Colname == "id":

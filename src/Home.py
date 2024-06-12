@@ -10,7 +10,7 @@ st.title(":factory: DataSet Factory", anchor=False)
 Col0, Col1, Col2 = st.columns([0.15,0.70,0.15])
 
 def readFile(): # return the content of the README file
-    with open('README.md', encoding="UTF-8") as md:
+    with open('home.md', encoding="UTF-8") as md:
         content = md.read()
     return content
 

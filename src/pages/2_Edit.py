@@ -10,6 +10,7 @@ st.title(":pencil: Edit a DataSet", anchor=False)
 
 # Load the temporary file path from session state
 uploadedFile = st.session_state.get('uploadedFile', None)
+df = st.session_state.get('dataframe', None)
 
 def displayDataFrame(uploadedFile, fileName, fileExtension):
     if uploadedFile is not None:
@@ -27,7 +28,7 @@ def displayDataFrame(uploadedFile, fileName, fileExtension):
 
             # Clean the dataframe to remove any null characters
             df = df.map(lambda x: x.replace('\x00', '') if isinstance(x, str) else x)
-        
+
             dfUpdate = db.GetDfFromDb(tableName,"")
 
             dataset_col, info_col = st.columns([3, 1])
@@ -43,15 +44,15 @@ def displayDataFrame(uploadedFile, fileName, fileExtension):
                 st.write("Columns Names: ", df.columns.tolist())
                 st.write("Columns Unique Values: ", df.nunique())
 
-            Col0, Col1 = st.columns([0.5, 0.5])
+            Col0, Col1, Col2 = st.columns([0.35, 0.35, 0.3])
             
             with Col0:
                 row_number = st.number_input("Row To Modify", min_value=0, max_value=df.shape[0]-1, step=1)
-                if st.button(":heavy_multiplication_x: Delete selected Row", help="Delete the row specified above"):
-                    dfUpdate = db.DeleteRow(tableName, row_number, True)
-                    st.experimental_rerun()
                 if st.button(":heavy_check_mark: Validate selected Row", help="Validate the row specified above"):
                     dfUpdate = db.Validate(tableName, row_number, True)
+                    st.experimental_rerun()
+                if st.button(":heavy_multiplication_x: Unvalidate Row"):
+                    dfUpdate = db.Unvalidate(tableName, row_number, True)
                     st.experimental_rerun()
                 if st.button(":heavy_check_mark: Validate all Row", help="Validate all Row"):
                     for x in range(df.shape[0]):
@@ -64,6 +65,9 @@ def displayDataFrame(uploadedFile, fileName, fileExtension):
                 valueToChange = st.text_input("The new value to replace in the dataset", value="")
                 if st.button(":heavy_check_mark: Change Value", help="Change the value"):
                     dfUpdate = db.UpdateRow(tableName, row_number, col, valueToChange)
+                    st.experimental_rerun()
+                if st.button(":heavy_multiplication_x: Delete selected Row", help="Delete the row specified above"):
+                    dfUpdate = db.DeleteRow(tableName, row_number, True)
                     st.experimental_rerun()
 
         except ValueError as e:
@@ -78,3 +82,5 @@ if uploadedFile is not None:
     displayDataFrame(uploadedFile, fileName, fileExtension)
 else:
     st.warning(":warning: No dataset loaded. Please upload a dataset in the Import section.")
+
+

@@ -14,7 +14,6 @@ bottomCol0, bottomCol1, bottomCol2 = st.columns([0.3, 0.4, 0.3])
 
 uploadedFile = st.session_state.get('uploadedFile', None)
 
-
 # Fonction pour sauvegarder le DataFrame dans un fichier JSON, JSONL ou Parquet
 def save_dataframe_to_file(df, directory, filename, file_format):
     if not os.path.exists(directory):
@@ -32,9 +31,14 @@ def save_dataframe_to_file(df, directory, filename, file_format):
 try:
     tableName = uploadedFile.name.replace("-", "_").split('.',1)[0]
     df = db.GetDfFromDb(tableName, f"SELECT * FROM {tableName} WHERE isValidate = 1")
-    
-    st.text("Dataframe view :")
-    st.dataframe(df, hide_index=True, use_container_width=True, height=495)
+    df = df.drop(columns=['isValidate'])
+
+    st.header(f":heavy_check_mark: Dataframe validated ({db.CountValidatedRow(tableName)} row(s)) :")
+
+    if (df.empty):
+        st.warning("No rows have been validated yet !")
+    else:
+        st.dataframe(df, hide_index=True, use_container_width=True, height=495)
 
     # Demander le nom du fichier à l'utilisateur
     file_name = st.text_input("Enter the file name (without extension):", value="exported_dataset")
@@ -48,10 +52,10 @@ try:
     
     # Bouton pour sauvegarder le DataFrame dans le format choisi
     if st.button("Save dataset"):
-        try:
+        if (not df.empty):
             filepath = save_dataframe_to_file(df, save_directory, filename, file_format)
             st.success(f":heavy_check_mark: File saved successfully at {filepath}")
-        except Exception as e:
-            st.error(f"Error saving file: {e}")
+        else:
+            st.error("Can't export DataSet, no rows have been validated !")
 except:
     st.warning(":warning: No dataset available to export. Please upload a dataset first.")
