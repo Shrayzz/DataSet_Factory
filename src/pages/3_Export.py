@@ -31,14 +31,14 @@ def save_dataframe_to_file(df, directory, filename, file_format):
 try:
     tableName = uploadedFile.name.replace("-", "_").split('.',1)[0]
     df = db.GetDfFromDb(tableName, f"SELECT * FROM {tableName} WHERE isValidate = 1")
-    df = df.drop(columns=['isValidate'])
+    df = df.drop(columns=['isValidate','id']) # for better display of the dataframe
 
-    st.header(f":heavy_check_mark: Dataframe validated ({db.CountValidatedRow(tableName)} row(s)) :")
+    st.header(f":heavy_check_mark: DataSet validated ({db.CountValidatedRow(tableName)} row(s)) :")
 
     if (df.empty):
         st.warning("No rows have been validated yet !")
     else:
-        st.dataframe(df, hide_index=True, use_container_width=True, height=495)
+        st.dataframe(df,  use_container_width=True)
 
     # Demander le nom du fichier à l'utilisateur
     file_name = st.text_input("Enter the file name (without extension):", value="exported_dataset")

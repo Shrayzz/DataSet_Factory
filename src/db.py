@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import sqlite3
 
+# database disk image malformated happen sometimes when leaving the app while writing to the database
 
 con = sqlite3.connect("dataset.db", check_same_thread=False, timeout=10000)
 cursor = con.cursor()
@@ -15,12 +16,12 @@ def GetDfFromDb(name, sql):
     global lastSqlQuery
     global allCols
     if sql == "":
-        sqlcol = " "
+        sqlcol = ""
         for col in allCols:
             sqlcol += col
             if col != allCols[-1]:
                 sqlcol+= ", "
-        sql = '''SELECT''' + sqlcol + " FROM "+ name
+        sql = '''SELECT ''' + sqlcol + " FROM "+ name
         lastSqlQuery = sql
     
     elif sql == "last" :

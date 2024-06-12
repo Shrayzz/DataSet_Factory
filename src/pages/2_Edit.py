@@ -47,7 +47,11 @@ def displayDataFrame(uploadedFile, fileName, fileExtension):
             Col0, Col1, Col2 = st.columns([0.35, 0.35, 0.3])
             
             with Col0:
-                row_number = st.number_input("Row To Modify", min_value=0, max_value=df.shape[0]-1, step=1)
+                row_number = st.number_input("Row To Modify / Add", min_value=0, max_value=df.shape[0]-1, step=1)
+                if st.button(":heavy_plus_sign: Add a row"):
+                    tableRow = [""] * df.shape[1]
+                    dfUpdate = db.AddRow(tableName,tableRow,False,row_number,True)
+                    st.experimental_rerun()
                 if st.button(":heavy_check_mark: Validate selected Row", help="Validate the row specified above"):
                     dfUpdate = db.Validate(tableName, row_number, True)
                     st.experimental_rerun()
