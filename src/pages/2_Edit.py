@@ -52,6 +52,9 @@ def displayDataFrame(uploadedFile, fileName, fileExtension):
                     tableRow = [""] * df.shape[1]
                     dfUpdate = db.AddRow(tableName,tableRow,False,row_number,True)
                     st.experimental_rerun()
+                if st.button(":heavy_multiplication_x: Delete selected Row", help="Delete the row specified above"):
+                    dfUpdate = db.DeleteRow(tableName, row_number, True)
+                    st.experimental_rerun()
                 if st.button(":heavy_check_mark: Validate selected Row", help="Validate the row specified above"):
                     dfUpdate = db.Validate(tableName, row_number, True)
                     st.experimental_rerun()
@@ -69,9 +72,6 @@ def displayDataFrame(uploadedFile, fileName, fileExtension):
                 valueToChange = st.text_input("The new value to replace in the dataset", value="")
                 if st.button(":heavy_check_mark: Change Value", help="Change the value"):
                     dfUpdate = db.UpdateRow(tableName, row_number, col, valueToChange)
-                    st.experimental_rerun()
-                if st.button(":heavy_multiplication_x: Delete selected Row", help="Delete the row specified above"):
-                    dfUpdate = db.DeleteRow(tableName, row_number, True)
                     st.experimental_rerun()
 
         except ValueError as e:
