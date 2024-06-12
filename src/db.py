@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import sqlite3
+import os
 
 
 con = sqlite3.connect("dataset.db", check_same_thread=False, timeout=10000)
@@ -56,11 +57,10 @@ def Normalize(name, df):
 
 # creates a sql database from df
 def CreateTable(name, df):
-    formated_name = name.replace("-", "_") # sqlite doesnt support '-' in table name
     global allCols
     col = len(df.columns)
     
-    sqlcreate = '''CREATE TABLE '''+formated_name+" ( id INTEGER PRIMARY KEY AUTOINCREMENT"
+    sqlcreate = '''CREATE TABLE '''+name+" ( id INTEGER PRIMARY KEY AUTOINCREMENT"
     allCols.clear()
     for col in df.columns:
         allCols.append(col)
@@ -68,11 +68,11 @@ def CreateTable(name, df):
     sqlcreate+=", isValidate BOOLEAN ) "
     allCols.append("isValidate")
 
-    cursor.execute('''DROP Table IF EXISTS '''+formated_name)
+    cursor.execute('''DROP Table IF EXISTS '''+name)
     cursor.execute(sqlcreate)
 
     for row in range(len(df)):
-        sqlinsert = '''INSERT INTO '''+formated_name+" VALUES "
+        sqlinsert = '''INSERT INTO '''+name+" VALUES "
         sqlinsert += ('(%a, "')%row
         for col in range(len(df.columns)):
             sqlinsert += (df.iloc[row,col]).replace('"', '""')
@@ -81,7 +81,7 @@ def CreateTable(name, df):
         sqlinsert += '", FALSE)'
         cursor.execute(sqlinsert)
 
-    return GetDfFromDb(formated_name,"")
+    return GetDfFromDb(name,"")
 
 # filtrates the database
 # searching : liste d'expression / colu : liste de colonnes (name of columns)
@@ -157,7 +157,7 @@ def DeleteRow(name, row, throwBack):
     sql='''DELETE FROM '''+name+" WHERE id = "+str(row)
     cursor.execute(sql)
     last = lastSqlQuery
-    Normalize(GetDfFromDb(name,""))
+    Normalize(name, GetDfFromDb(name,""))
     lastSqlQuery = last
     con.commit()
 
@@ -191,7 +191,7 @@ def AddRow(name, listValues, valid = False, row = None, force = False, replace =
     else :
         cursor.execute('''SELECT * FROM '''+name+" WHERE id ="+str(row))
         result = cursor.fetchall()
-        st.write(result)
+        # st.write(result) debug
         if result :
             if force :
                 cursor.execute("UPDATE "+name+" SET id = id+"+str(len(df)+1)+" WHERE id BETWEEN "+str(row) +" AND " +str(len(df)))

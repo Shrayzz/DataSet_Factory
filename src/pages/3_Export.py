@@ -2,6 +2,7 @@ import streamlit as st
 import os
 import pandas as pd
 import numpy as np
+import db
 
 st.set_page_config(page_title="DataSet Factory - Export a file", page_icon=":factory:", layout="wide", menu_items={"Get Help": 'https://github.com/Shrayzz/py_Jeu-de-Donnees/blob/main/README.md', "About": 'https://github.com/Shrayzz/py_Jeu-de-Donnees'})
 
@@ -10,6 +11,9 @@ st.title(":outbox_tray: Export a DataSet", anchor=False)
 # Colonnes pour la mise en page
 topCol0, topCol1 = st.columns([0.75, 0.25])
 bottomCol0, bottomCol1, bottomCol2 = st.columns([0.3, 0.4, 0.3])
+
+uploadedFile = st.session_state.get('uploadedFile', None)
+
 
 # Fonction pour sauvegarder le DataFrame dans un fichier JSON, JSONL ou Parquet
 def save_dataframe_to_file(df, directory, filename, file_format):
@@ -25,11 +29,12 @@ def save_dataframe_to_file(df, directory, filename, file_format):
     return filepath
 
 # Charger le DataFrame depuis l'état de la session
-if 'dataframe' in st.session_state:
-    df = st.session_state['dataframe']
+try:
+    tableName = uploadedFile.name.replace("-", "_").split('.',1)[0]
+    df = db.GetDfFromDb(tableName, f"SELECT * FROM {tableName} WHERE isValidate = 1")
     
     st.text("Dataframe view :")
-    st.dataframe(df, use_container_width=True, height=495)
+    st.dataframe(df, hide_index=True, use_container_width=True, height=495)
 
     # Demander le nom du fichier à l'utilisateur
     file_name = st.text_input("Enter the file name (without extension):", value="exported_dataset")
@@ -48,5 +53,5 @@ if 'dataframe' in st.session_state:
             st.success(f":heavy_check_mark: File saved successfully at {filepath}")
         except Exception as e:
             st.error(f"Error saving file: {e}")
-else:
+except:
     st.warning(":warning: No dataset available to export. Please upload a dataset first.")

@@ -18,7 +18,6 @@ def uploadJsonFile(): # upload a file to display it in a dataset
         uploadedFile = st.file_uploader("Load a dataset file", type=['json', 'jsonl'], accept_multiple_files=False, help="Upload datasets in JSON / JSONL format only",)
         if st.button(":inbox_tray: Load a dataset"):
             if uploadedFile is not None:
-                
                 # Load the data into a DataFrame
                 if uploadedFile.name.endswith('.json'):
                     df = pd.read_json(uploadedFile)

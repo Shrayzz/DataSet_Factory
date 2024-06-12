@@ -8,8 +8,6 @@ st.set_page_config(page_title="DataSet Factory - Edit a DataSet", page_icon=":fa
 
 st.title(":pencil: Edit a DataSet", anchor=False)
 
-topCol0, topCol1 = st.columns([0.75,0.25])
-
 # Load the temporary file path from session state
 uploadedFile = st.session_state.get('uploadedFile', None)
 
@@ -30,27 +28,44 @@ def displayDataFrame(uploadedFile, fileName, fileExtension):
             # Clean the dataframe to remove any null characters
             df = df.map(lambda x: x.replace('\x00', '') if isinstance(x, str) else x)
         
-            with topCol0:
-                st.header(f":pushpin: {fileName} Dataset")
-                st.dataframe(db.CreateTable(tableName,df), use_container_width=True, height=495)
+            dfUpdate = db.GetDfFromDb(tableName,"")
 
-            with topCol1:
+            dataset_col, info_col = st.columns([3, 1])
+            
+            with dataset_col:
+                st.header(f":pushpin: {fileName} Dataset")
+                st.dataframe(dfUpdate, use_container_width=True, height=500)
+                
+            with info_col:
                 st.header(":clipboard: Informations")
-                with st.container():
-                    st.write("Rows: ", df.shape[0])
-                    st.write("Columns: ", df.shape[1])
-                    st.write("Columns Names: ", df.columns.tolist())
-                    st.write("Columns Unique Values: ", df.nunique())
-                    row_number = st.number_input("Row To Modify", min_value=0, max_value=df.shape[0], step=1)
-                    if st.button(":heavy_multiplication_x: Delete selected Row", help="Delete the row specified above"):
-                        db.DeleteRow(tableName,row_number,throwBack=True)
-                    if st.button(":heavy_check_mark: Validate selected Row", help="Validate the row specified above"):
-                        db.Validate(tableName,row_number)
-                        db.CreateTable(tableName, df) # actualize db 
-                    if st.button(":heavy_check_mark: Validate all Row", help="Validate all Row"):
-                        db.Validate(tableName,df.shape[0])
-                        db.CreateTable(tableName, df) #actualize db
-        
+                st.write("Rows: ", df.shape[0])
+                st.write("Columns: ", df.shape[1])
+                st.write("Columns Names: ", df.columns.tolist())
+                st.write("Columns Unique Values: ", df.nunique())
+
+            Col0, Col1 = st.columns([0.5, 0.5])
+            
+            with Col0:
+                row_number = st.number_input("Row To Modify", min_value=0, max_value=df.shape[0]-1, step=1)
+                if st.button(":heavy_multiplication_x: Delete selected Row", help="Delete the row specified above"):
+                    dfUpdate = db.DeleteRow(tableName, row_number, True)
+                    st.experimental_rerun()
+                if st.button(":heavy_check_mark: Validate selected Row", help="Validate the row specified above"):
+                    dfUpdate = db.Validate(tableName, row_number, True)
+                    st.experimental_rerun()
+                if st.button(":heavy_check_mark: Validate all Row", help="Validate all Row"):
+                    for x in range(df.shape[0]):
+                        db.Validate(tableName, x)
+                    dfUpdate = db.GetDfFromDb(tableName, "")
+                    st.experimental_rerun()
+                
+            with Col1:
+                col = st.selectbox("Columns where you want to Replace", options=df.columns.values)
+                valueToChange = st.text_input("The new value to replace in the dataset", value="")
+                if st.button(":heavy_check_mark: Change Value", help="Change the value"):
+                    dfUpdate = db.UpdateRow(tableName, row_number, col, valueToChange)
+                    st.experimental_rerun()
+
         except ValueError as e:
             st.error(f":x: Error reading JSON file: {e}")
             st.error(":x: Ensure the uploaded file is a valid JSON.")
