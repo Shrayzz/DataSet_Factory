@@ -218,9 +218,26 @@ def AddRow(name, listValues, valid = False, row = None, force = False, replace =
 def AddColumn(name, Colname, value):
     global allCols
     global lastSqlQuery
+    if Colname == "id":
+        return
     allCols.append(name)
     cursor.execute("ALTER TABLE "+name+" ADD "+Colname+" VARCHAR(500)")
     cursor.execute("UPDATE "+name+" SET "+Colname+" = \""+value+"\" WHERE id = id")
     con.commit()
 
+    return GetDfFromDb(name, "")
+
+# remove a column
+# Colname (string)
+# returns the updated df
+def Removeolumn(name, Colname):
+    global allCols
+    global lastSqlQuery
+    if Colname == "id":
+        return
+    if not allCols.remove(Colname):
+        return
+    cursor.execute("ALTER TABLE "+name+" DROP COLUMN "+Colname)
+    con.commit()
+    
     return GetDfFromDb(name, "")
