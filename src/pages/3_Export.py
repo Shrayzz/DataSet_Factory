@@ -33,7 +33,7 @@ try:
     df = db.GetDfFromDb(tableName, f"SELECT * FROM {tableName} WHERE isValidate = 1")
     df = df.drop(columns=['isValidate'])
 
-    st.header(f":heavy_check_mark: Dataframe validated ({db.CountValidatedRow(tableName)} row(s)) :")
+    st.header(f":heavy_check_mark: DataSet validated ({db.CountValidatedRow(tableName)} row(s)) :")
 
     if (df.empty):
         st.warning("No rows have been validated yet !")
