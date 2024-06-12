@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import sqlite3
-import os
 
 
 con = sqlite3.connect("dataset.db", check_same_thread=False, timeout=10000)
